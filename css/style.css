@@ -19,11 +19,18 @@ main {
     grid-column: 1;
     grid-row: 1;
 }
+#p1Plupp {
+    border: 10px solid blue;
+}
 
 #player2 {
     background-color: red;
     grid-column: 3;
     grid-row: 1;
+}
+
+#p2Plupp {
+    border: 10px solid red;
 }
 
 #player3 {
@@ -32,10 +39,27 @@ main {
     grid-row: 3;
 }
 
+#p3Plupp {
+    border: 10px solid green;
+}
+
 #player4 {
     background-color: yellow;
     grid-column: 3;
     grid-row: 3;
+}
+#p4Plupp {
+    border: 10px solid yellow;
+}
+
+#right {
+    grid-row: 2;
+    grid-column: 3;
+}
+
+#left {
+    grid-row: 2;
+    grid-column: 1;
 }
 
 .player{
@@ -94,6 +118,20 @@ main {
     align-items: center;
 }
 
+.usedPlupp {
+    width: 50px;
+    height: 50px;
+    background-color: black;
+    border-radius: 100%;
+    z-index: 10000;
+    /* margin: 100px; */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin: 10px;
+}
+
+
 .questionContainer {
     width: 60%;
     height: 60%;
@@ -125,7 +163,21 @@ main {
     border-radius: 100%;
 }
 
-#p1Points {
-    grid-column: 1;
-    grid-row: 2;
+
+.pluppContainer {
+    width: 95%;
+    height: 150px;
+    margin-top: 10px;
+    margin-bottom: 10px;
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+    border-radius: var(--border-radius);
 }
+
+.sideContainer {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+}
+
