@@ -17,7 +17,7 @@
 
 	<h1 class="playerName">Player 1 </h1>
 	
-	<div class="points"> 10pts</div>
+	<div class="points" id="p1Points"> 0 pts</div>
 
       </div>
 
@@ -25,26 +25,10 @@
 
 	<div class="pluppContainer" id="p1Plupp">	
 	  
-	  <div class="usedPlupp"> </div>
-	  <div class="usedPlupp"> </div>
-	  <div class="usedPlupp"> </div>
-	  <div class="usedPlupp"> </div>
-	  <div class="usedPlupp"> </div>
-	  <div class="usedPlupp"> </div>
-	  <div class="usedPlupp"> </div>
-	  <div class="usedPlupp"> </div>
 	</div>
 
 	<div class="pluppContainer" id="p3Plupp">	
 	  
-	  <div class="usedPlupp"> </div>
-	  <div class="usedPlupp"> </div>
-	  <div class="usedPlupp"> </div>
-	  <div class="usedPlupp"> </div>
-	  <div class="usedPlupp"> </div>
-	  <div class="usedPlupp"> </div>
-	  <div class="usedPlupp"> </div>
-	  <div class="usedPlupp"> </div>
 	</div>
 	
       </div>
@@ -53,31 +37,15 @@
 
 	<h1 class="playerName">Player 2</h1>
 	
-	<div class="points"> 10pts</div>
+	<div class="points" id="p2Points"> 0 pts</div>
       </div>
 
       <div class="sideContainer" id="right"> 
 	<div class="pluppContainer" id="p2Plupp">		  
-	  <div class="usedPlupp"> </div>
-	  <div class="usedPlupp"> </div>
-	  <div class="usedPlupp"> </div>
-	  <div class="usedPlupp"> </div>
-	  <div class="usedPlupp"> </div>
-	  <div class="usedPlupp"> </div>
-	  <div class="usedPlupp"> </div>
-	  <div class="usedPlupp"> </div>
 	</div>
 
 	<div class="pluppContainer" id="p4Plupp">	
-	  
-	  <div class="usedPlupp"> </div>
-	  <div class="usedPlupp"> </div>
-	  <div class="usedPlupp"> </div>
-	  <div class="usedPlupp"> </div>
-	  <div class="usedPlupp"> </div>
-	  <div class="usedPlupp"> </div>
-	  <div class="usedPlupp"> </div>
-	  <div class="usedPlupp"> </div>
+
 	</div>
       </div>
 
@@ -85,23 +53,24 @@
 	
 	<h1 class="playerName">Player 3</h1>
 	
-	<div class="points"> 10pts</div>
+	<div class="points" id="p3Points"> 0 pts</div>
       </div>
 
-
-      <div class="sideContainer">
-
-      </div>
 
       <div class="player" id="player4">
 	
 	<h1 class="playerName">Player 4</h1>
 	
-	<div class="points"> 10pts</div>
+	<div class="points" id="p4Points"> 0 pts</div>
       </div>
 
-      <div class="sideContainer">
+      <div class="sideContainer" id="top">
+	<div class="passButton" onclick="pass()"> Pass </div>
+      </div>
 
+      <div id="bottom">
+	<input type="text">
+	<div class="button" onclick="submit()"> </div>
       </div>
 
       <div class="boardContainer"> 

@@ -1,7 +1,6 @@
 "use strict";
 
 
-
 let pluppar = document.getElementsByClassName("plupp");
 
 for (var i = 0; i < pluppar.length; i++) {    
@@ -120,22 +119,84 @@ window.addEventListener("resize", function(){
     aroundPerimiter(wHalf - pluppRadius, hHalf + circleRadius);
 }, true);
 
+var points;
+
+var currentPlayer = 1;
+
+function pass() {
+    players[currentPlayer-1].pass = true;
+    players.splice(currentPlayer-1, 1);
+
+    console.log(currentPlayer);
+}
 
 function clicked(pluppNr) {
-    console.log(pluppNr);
-    
-    var clickedPlupp = document.getElementById("plupp" + pluppNr);
-    clickedPlupp.style.backgroundColor = "white";
-    clickedPlupp.innerHTML = "svar";
+    console.log(currentPlayer);
 
-    if (evaluateAnswer() == true) {
-	points++;
+    
+    if (currentPlayer == 5) {
+	currentPlayer = 1;
+    }
+    if (players[currentPlayer-1] == undefined) {
+	currentPlayer++;
+	return;
     }
     
+    if (players[currentPlayer - 1].pass == false) {
+
+	var clickedPlupp = document.getElementById("plupp" + pluppNr);
+	clickedPlupp.style.backgroundColor = "white";
+	clickedPlupp.innerHTML = "svar";
+	
+	if (evaluateAnswer() == true) {
+	    players[currentPlayer - 1].addPlupp();
+	    currentPlayer++;
+	}
+	
+    } 
 }
+
+
 
 function evaluateAnswer () {
     return true;
 }
+
+// function addPlupp(player) {
+//     var container = document.getElementById("p"+player+"Plupp");
+//     container.innerHTML += "<div class='usedPlupp'> </div>";
+// }
+
+let players = [];
+
+
+
+class Player {
+
+    constructor() {
+	this.playerNumber = players.length+1;
+	this.points = 0;
+	this.plupps = 0;
+	this.pass = false;
+	this.scoreBoard = document.getElementById("p" + this.playerNumber + "Points");
+	players.push(this);
+    }
+
+    addPoints() {
+	this.points++;
+	this.scoreBoard.innerHTML = this.points;
+    }
+    
+    addPlupp() {
+	var container = document.getElementById("p"+this.playerNumber+"Plupp");
+	container.innerHTML += "<div class='usedPlupp'> </div>";
+	this.plupps++;
+    }
+}
+
+let barre = new Player();
+let viktor = new Player();
+let erik = new Player();
+let carlEngman = new Player();
 
 
