@@ -1,0 +1,27 @@
+{
+  "name": "smart10",
+  "version": "1.0.0",
+  "description": "Smart 10 online game",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server",
+    "dev": "nodemon server"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/barr3/Smart10.git"
+  },
+  "author": "Barre Nils Fredrik Svante Åke Blomberg",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/barr3/Smart10/issues"
+  },
+  "homepage": "https://github.com/barr3/Smart10#readme",
+  "dependencies": {
+    "express": "^4.17.1",
+    "socket.io": "^4.1.2"
+  },
+  "devDependencies": {
+    "nodemon": "^2.0.7"
+  }
+}

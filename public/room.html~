@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="sv">
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Smart 10</title>
+    <script defer
+      src="https://cdnjs.cloudflare.com/ajax/libs/qs/6.9.2/qs.min.js"
+      integrity="sha256-TDxXjkAUay70ae/QJBEpGKkpVslXaHHayklIVglFRT4="
+      crossorigin="anonymous"
+    ></script>
+    <script defer src="/socket.io/socket.io.js"> </script>
+    <script defer src="./js/main.js"> </script>
+
+    <link rel="stylesheet" href="./css/style.css" type="text/css" media="screen" />
+    
+  </head>
+  <body>
+    
+    <main>
+
+      <div class="player" id="player1">
+
+	<h1 class="playerName">Player 1 </h1>
+	
+	<div class="points" id="p1Points"> 0 pts</div>
+
+      </div>
+
+      <div class="sideContainer" id="left">
+
+	<div class="pluppContainer" id="p1Plupp">	
+	  
+	</div>
+
+	<div class="pluppContainer" id="p3Plupp">	
+	  
+	</div>
+	
+      </div>
+      
+      <div class="player" id="player2">
+
+	<h1 class="playerName">Player 2</h1>
+	
+	<div class="points" id="p2Points"> 0 pts</div>
+      </div>
+
+      <div class="sideContainer" id="right"> 
+	<div class="pluppContainer" id="p2Plupp">		  
+	</div>
+
+	<div class="pluppContainer" id="p4Plupp">	
+
+	</div>
+      </div>
+
+      <div class="player" id="player3">
+	
+	<h1 class="playerName">Player 3</h1>
+	
+	<div class="points" id="p3Points"> 0 pts</div>
+      </div>
+
+
+      <div class="player" id="player4">
+	
+	<h1 class="playerName">Player 4</h1>
+	
+	<div class="points" id="p4Points"> 0 pts</div>
+      </div>
+
+      <div class="sideContainer" id="top">
+	<div class="passButton" onclick="pass()"> Pass </div>
+      </div>
+
+      <div id="bottom">
+	<input type="text">
+	<div class="button" onclick="submit()"> </div>
+      </div>
+
+      <div class="boardContainer"> 
+	<div class="board">
+	 
+	    <div class="plupp" id="plupp1" onclick="clicked(1)"> </div>
+	    <div class="plupp" id="plupp2" onclick="clicked(2)"> </div>
+	    <div class="plupp" id="plupp3" onclick="clicked(3)"> </div>
+	    <div class="plupp" id="plupp4" onclick="clicked(4)"> </div>
+	    <div class="plupp" id="plupp5" onclick="clicked(5)"> </div>
+	    <div class="plupp" id="plupp6" onclick="clicked(6)"> </div>
+	    <div class="plupp" id="plupp7" onclick="clicked(7)"> </div>
+	    <div class="plupp" id="plupp8" onclick="clicked(8)"> </div>
+	    <div class="plupp" id="plupp9" onclick="clicked(9)"> </div>
+	    <div class="plupp" id="plupp10" onclick="clicked(10)"> </div>
+
+	    <div class="questionContainer">
+	      
+	      <div class="question">
+		<div class="questionRing">Det här är en fråga?</div>
+	      </div>
+
+	  </div>
+	</div>
+      </div>
+      
+    </main>
+    
+  </body>
+</html>
