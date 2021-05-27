@@ -1,6 +1,7 @@
 "use strict";
 
 
+
 let pluppar = document.getElementsByClassName("plupp");
 
 for (var i = 0; i < pluppar.length; i++) {    

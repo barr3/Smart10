@@ -9,7 +9,7 @@ window.addEventListener('beforeunload', function (e) {
 });
 
 
-let players = []
+let players = [];
 
 //========================================================
 const socket = io();
@@ -45,8 +45,6 @@ socket.on('question', question => {
 });
 
 function setQuestions(question, alts) {
-    console.log(question);
-    console.log(alts);
     
     document.getElementById('questionId').innerHTML = question;
     for (var i = 0; i < 10; i++) {
@@ -55,29 +53,64 @@ function setQuestions(question, alts) {
    
 }
 
-socket.emit('chatMessage', "hej jag tycker att korv är gott");
+
 
 const { username, room } = QueryStringDecoder.decode(window.location.search);
 
 //Join room
 socket.emit('joinRoom', {username, room});
 
+
+
+
+
 // socket.on('playerName', (name) => {
 //     players.push(new Player(name));
 // })
 
+function getCurrentPlayer() {
+
+
+    socket.on('isCurrentPlayer', (currentPlayerBool) => {
+	console.log(currentPlayerBool);
+    });
+
+    var temp;
+    
+    function korv(param) {
+	temp = param;
+	return temp;
+    }
+    console.log(temp);
+    return temp;
+
+}
+
+
+
+
+
 socket.on('playerName', serverPlayers => {
-    for (var i = 0; i < serverPlayers.length; i++) {	
-	console.log(serverPlayers[i].playerNumber);
-	document.getElementById("player" + serverPlayers[i].playerNumber).childNodes[1].innerHTML = serverPlayers[i].name;
+    // document.getElementById("player" + serverPlayers[1]).childNodes[1].innerHTML = serverPlayers[0];
+    for (var i = 0; i < serverPlayers.length; i++) {
+	players[i] = serverPlayers[i];		
     }
 
+    setPlayerNames();
+    
 });
+
+function setPlayerNames() {
+    for (var i = 0; i < players.length; i++) {
+	document.getElementById("player" + players[i].playerNumber).childNodes[1].innerHTML = players[i].name;
+    }
+}
 
 
 
 
 //========================================================
+
 
 
 let pluppar = document.getElementsByClassName("plupp");
@@ -241,30 +274,28 @@ function pass() {
     console.log(currentPlayer);
 }
 
+var clickedBool = false;
+
 function clicked(pluppNr) {
-    console.log(currentPlayer);
-
-    
-    if (currentPlayer == 5) {
-	currentPlayer = 1;
-    }
-    if (players[currentPlayer-1] == undefined) {
-	currentPlayer++;
-	return;
-    }
-    
-    if (players[currentPlayer - 1].pass == false) {
-
-	var clickedPlupp = document.getElementById("plupp" + pluppNr);
-	clickedPlupp.style.backgroundColor = "white";
-	clickedPlupp.innerHTML = "svar";
-	
-	if (evaluateAnswer() == true) {
-	    players[currentPlayer - 1].addPlupp();
-	    currentPlayer++;
+    socket.emit('reqCurrentPlayer', socket.id);
+    socket.on('isCurrentPlayer', (currentPlayerBool) => {	
+	console.log(currentPlayerBool);
+	if (currentPlayerBool) {
+	    var clickedPlupp = document.getElementById("plupp" + pluppNr);
+	    var answerBox = document.getElementById("bottom");
+	    if (clickedBool = false) {
+		clickedPlupp.style.boxShadow = "0px 0px 1px 4px white";
+		answerBox.style.display = "flex";
+		clickedPlupp.innerHTML = "svar";		    		
+	    } else {
+		clickedPlupp.style.boxShadow = "none";
+	    }
+	    
+	} else {
+	    console.log("wallah det funkar");
 	}
-	
-    } 
+    });
+    
 }
 
 
