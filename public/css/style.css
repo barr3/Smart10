@@ -115,6 +115,7 @@ main {
     display: none;
     justify-content: center;
     align-items: center;
+    font-size: 14px;
 }
 
 .usedPlupp {
@@ -215,6 +216,20 @@ input {
     height: 100%;
     width: 300px;
     border-radius: var(--border-radius);
+}
+
+/* #answer { */
+/*     display: flex; */
+/*     justify-content: center; */
+/*     align-items: center; */
+/*     color: white;  */
+/* } */
+
+#sendButton {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    color: white;
 }
 
 .alts {

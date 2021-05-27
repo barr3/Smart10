@@ -11,7 +11,8 @@ window.addEventListener('beforeunload', function (e) {
 
 let players = [];
 
-//========================================================
+
+//=======================Backend stuff========================
 const socket = io();
 
 var QueryStringDecoder = (function() {
@@ -60,10 +61,6 @@ const { username, room } = QueryStringDecoder.decode(window.location.search);
 //Join room
 socket.emit('joinRoom', {username, room});
 
-
-
-
-
 // socket.on('playerName', (name) => {
 //     players.push(new Player(name));
 // })
@@ -86,10 +83,6 @@ function getCurrentPlayer() {
 
 }
 
-
-
-
-
 socket.on('playerName', serverPlayers => {
     // document.getElementById("player" + serverPlayers[1]).childNodes[1].innerHTML = serverPlayers[0];
     for (var i = 0; i < serverPlayers.length; i++) {
@@ -97,7 +90,8 @@ socket.on('playerName', serverPlayers => {
     }
 
     setPlayerNames();
-    
+    setPlayerScores();
+    setPlayerPlupps();
 });
 
 function setPlayerNames() {
@@ -106,10 +100,43 @@ function setPlayerNames() {
     }
 }
 
+function setPlayerScores() {
+    for (var i = 0; i < players.length; i++) {
+	document.getElementById("player" + players[i].playerNumber).childNodes[3].innerHTML = players[i].points + " pts";
+    }    
+}
+
+// function setPlayerPlupps() {
+//     for (var i = 0; i < players.length; i++) {
+// 	console.log(players[i].plupps);	
+//     }
+// }
+
+function setPlayerPlupps() {
+    for (var i = 0; i < players.length; i++) {
+
+	var container = document.getElementById("p"+players[i].playerNumber+"Plupp");
+	container.innerHTML = "";	    
+
+	for (var j = 0; j < players[i].plupps; j++) {
+	    container.innerHTML += "<div class='usedPlupp'> </div>";	    
+	}	
+
+    }
+}
+
+socket.on('removePlupp', ([plupp, answer]) => {
+
+    console.log("Hje");
+
+    document.getElementById("plupp" + plupp).style.outline = "none";
+    document.getElementById("plupp" + plupp).style.backgroundColor = "white";
+    document.getElementById("plupp" + plupp).innerHTML = answer;
+    
+});
 
 
-
-//========================================================
+//===================Game board stuff, DO NOT TOUCH===================
 
 
 
@@ -137,8 +164,6 @@ var h = window.innerHeight;
 
 var wHalf = w/2;
 var hHalf = h/2;
-
-
 
 circle.style.left = midPoint - circleRadius +"px"
 circle.style.top = midPoint - circleRadius + "px";
@@ -263,9 +288,11 @@ window.addEventListener("resize", function(){
     aroundPerimiter(wHalf - pluppRadius, hHalf + circleRadius);
 }, true);
 
-var points;
+// var points;
 
-var currentPlayer = 1;
+// var currentPlayer = 1;
+
+//===========Frontend stuff======================
 
 function pass() {
     players[currentPlayer-1].pass = true;
@@ -275,20 +302,22 @@ function pass() {
 }
 
 var clickedBool = false;
+var clickedPlupp;
 
 function clicked(pluppNr) {
     socket.emit('reqCurrentPlayer', socket.id);
     socket.on('isCurrentPlayer', (currentPlayerBool) => {	
 	console.log(currentPlayerBool);
 	if (currentPlayerBool) {
-	    var clickedPlupp = document.getElementById("plupp" + pluppNr);
+	    clickedPlupp = document.getElementById("plupp" + pluppNr);
 	    var answerBox = document.getElementById("bottom");
-	    if (clickedBool = false) {
+	    if (clickedBool == false) {
 		clickedPlupp.style.boxShadow = "0px 0px 1px 4px white";
 		answerBox.style.display = "flex";
-		clickedPlupp.innerHTML = "svar";		    		
+		console.log("clicked false");
 	    } else {
 		clickedPlupp.style.boxShadow = "none";
+		console.log("clicked true");
 	    }
 	    
 	} else {
@@ -299,60 +328,19 @@ function clicked(pluppNr) {
 }
 
 
-
-function evaluateAnswer () {
-    return true;
-}
-
-// function addPlupp(player) {
-//     var container = document.getElementById("p"+player+"Plupp");
-//     container.innerHTML += "<div class='usedPlupp'> </div>";
-// }
-
-
-
-
-
-// class Player {
-
-//     constructor(name) {
-// 	this.playerNumber = players.length+1;
-// 	this.points = 0;
-// 	this.plupps = 0;
-// 	this.pass = false;
-// 	this.scoreBoard = document.getElementById("p" + this.playerNumber + "Points");
-// 	// players.push(this);
-// 	this.name = name;
-	
-// 	document.getElementById("player" + this.playerNumber).childNodes[1].innerHTML = this.name;
-	
-	
-//     }
-
-//     addPoints() {
-// 	this.points++;
-// 	this.scoreBoard.innerHTML = this.points;
-//     }
+function submit() {
+    var answer = document.getElementById("answer").value;
+    var answerBox = document.getElementById("bottom");
+    clickedPlupp = clickedPlupp.id.split("p")[3];
+    console.log(clickedPlupp);
     
-//     addPlupp() {
-// 	var container = document.getElementById("p"+this.playerNumber+"Plupp");
-// 	container.innerHTML += "<div class='usedPlupp'> </div>";
-// 	this.plupps++;
-//     }
-// }
-
-function addPoints(player) {
-    this.points++;
-    this.scoreBoard.innerHTML = this.points;
-}
+    console.log(answer);
     
-function addPlupp(player) {
-    var container = document.getElementById("p"+player+"Plupp");
-    container.innerHTML += "<div class='usedPlupp'> </div>";
+    socket.emit('submit', [clickedPlupp, answer, socket.id]);
 
+
+    answer = "";
+    answerBox.style.display = "none";
 }
-
-
-// console.log(players);
 
 

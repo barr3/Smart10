@@ -16,7 +16,7 @@ let currentQuestion;
 //Set static folder
 app.use(express.static(path.join(__dirname, 'public')));
 
-getNewQeustion();
+getNewQuestion();
 
 var currentPlayer = 1;
 
@@ -24,23 +24,17 @@ var currentPlayer = 1;
 io.on('connection', function(socket) {
 
     socket.on('joinRoom', ({username}) => {
-	
+
 	player = new Player(username, socket.id);
 	
 	if (players.length >= 4) {
 	    socket.emit('tooManyPlayers');
-
 	} else {
 	    players.push(player);	
 	}
 	
 	players[0].playersTurn = true;
-	// const user = userJoin(socket.id,username);
-	// socket.join(user.room);
-	// socket.id = numOfPlayers;
 
-	// console.log(username);
-	
 	socket.on('reqCurrentPlayer' , (id) => {
 	    if (id == players[currentPlayer-1].id) {
 		console.log("match");
@@ -49,28 +43,26 @@ io.on('connection', function(socket) {
 		console.log("not match");
 		socket.emit('isCurrentPlayer', false);
 	    }
-
-	});
-	
-
-	
-
-	// console.log(currentQuestion);
-
-	// session.push([socket.id, username])
-
-	io.emit('playerName', players);
-
-	//Listen for chatMessage
-	socket.on('chatMessage' , (msg) => {
-	    io.emit('message', msg);	
 	});
 
+	
+	socket.on('submit', ([clickedPlupp, answer, id]) => {
+	    if (evaluateQuestion(clickedPlupp, answer)) {
+		players[pairPlayerWithPlayer(id)].plupps++;
+	    } else {
+		players[pairPlayerWithPlayer(id)].plupps = 0;
+	    }
+	    updatePlayers();
+	    
+	    //Displays the answer and removes plupp
+
+	    io.emit('removePlupp', [clickedPlupp, currentQuestion.answers[clickedPlupp-1]]);
+	    
+        });
+
+	// io.emit('playerName', players);
+	updatePlayers();
 	io.emit('question', [currentQuestion.question,currentQuestion.alts]);
-	
-	// socket.on('addPlupp', function() {
-
-	// });
 	
 	//runs when client disconnects
 	socket.on('disconnect', () =>{
@@ -81,10 +73,32 @@ io.on('connection', function(socket) {
         
 });
 
-function getNewQeustion() {
+function updatePlayers() {
+    io.emit('playerName', players);
+}
+
+function evaluateQuestion(plupp, answer) {
+    if (currentQuestion.answers[plupp-1] == answer) {
+	return true;
+    } else {
+	return false;
+    }
+}
+
+function getNewQuestion() {
     currentQuestion = getQuestion();
 }
 
+function pairPlayerWithPlayer(id) {
+
+    for (var i = 0; i < players.length; i++) {
+	
+	if (players[i].id == id) {
+	    return i;
+	}
+	
+    }
+}
 
 class Player {
 
