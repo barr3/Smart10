@@ -126,9 +126,6 @@ function setPlayerPlupps() {
 }
 
 socket.on('removePlupp', ([plupp, answer]) => {
-
-    console.log("Hje");
-
     document.getElementById("plupp" + plupp).style.outline = "none";
     document.getElementById("plupp" + plupp).style.backgroundColor = "white";
     document.getElementById("plupp" + plupp).innerHTML = answer;
@@ -305,8 +302,10 @@ var clickedBool = false;
 var clickedPlupp;
 
 function clicked(pluppNr) {
+
     socket.emit('reqCurrentPlayer', socket.id);
-    socket.on('isCurrentPlayer', (currentPlayerBool) => {	
+    socket.on('isCurrentPlayer', (currentPlayerBool) => {
+
 	console.log(currentPlayerBool);
 	if (currentPlayerBool) {
 	    clickedPlupp = document.getElementById("plupp" + pluppNr);
@@ -315,40 +314,27 @@ function clicked(pluppNr) {
 	    socket.on('returnClicked', function(clickedPlupps) {
 		// console.log(clickedPlupps);
 
+		var clickedPluppTemp = clickedPlupp.id.split("p")[3].toString();
+		// var temp2 = temp.toString();
 
-		if (clickedPlupps.includes(toString(pluppNr)) == false) { 
+		if (clickedPlupps.includes(clickedPluppTemp) == false) { 
 		    var answerBox = document.getElementById("bottom");
 		    if (clickedBool == false) {
 			clickedPlupp.style.boxShadow = "0px 0px 1px 4px white";
-			answerBox.style.display = "flex";
-			console.log(clickedPlupps[i], pluppNr, "hit borde du inte komma");
+			answerBox.style.display = "flex";			
+			// console.log(clickedPlupps, pluppNr, "hit borde du inte komma");
 			// console.log("clicked false");
 		    } else {
 			clickedPlupp.style.boxShadow = "none";
 			// console.log("clicked true");
 		    }		
 		    
-		} else {
-		    console.log("fel");
 		}
-
 		
 	    });
-	    
-	    // var answerBox = document.getElementById("bottom");
-	    // if (clickedBool == false) {
-	    // 	clickedPlupp.style.boxShadow = "0px 0px 1px 4px white";
-	    // 	answerBox.style.display = "flex";
-	    // 	// console.log("clicked false");
-	    // } else {
-	    // 	clickedPlupp.style.boxShadow = "none";
-	    // 	// console.log("clicked true");
-	    // }
-	    
+
 	}
-	// else {
-	    
-	// }
+
     });
     
 }
@@ -364,8 +350,8 @@ function submit() {
     
     socket.emit('submit', [clickedPlupp, answer, socket.id]);
 
-
     answer = "";
+
     answerBox.style.display = "none";
 }
 
