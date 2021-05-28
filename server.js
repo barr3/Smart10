@@ -18,7 +18,9 @@ app.use(express.static(path.join(__dirname, 'public')));
 
 getNewQuestion();
 
-var currentPlayer = 1;
+var currentPlayer;
+
+var clickedPlupps = [];
 
 //Run when client connects
 io.on('connection', function(socket) {
@@ -26,17 +28,19 @@ io.on('connection', function(socket) {
     socket.on('joinRoom', ({username}) => {
 
 	player = new Player(username, socket.id);
+
 	
 	if (players.length >= 4) {
 	    socket.emit('tooManyPlayers');
 	} else {
 	    players.push(player);	
-	}
-	
+	}	
+	currentPlayer = 0; 
 	players[0].playersTurn = true;
 
 	socket.on('reqCurrentPlayer' , (id) => {
-	    if (id == players[currentPlayer-1].id) {
+	    console.log(currentPlayer);
+	    if (id == players[currentPlayer].id) {
 		console.log("match");
 		socket.emit('isCurrentPlayer', true)
 	    } else {
@@ -53,13 +57,20 @@ io.on('connection', function(socket) {
 		players[pairPlayerWithPlayer(id)].plupps = 0;
 	    }
 	    updatePlayers();
+
+	    clickedPlupps.push(clickedPlupp);
 	    
 	    //Displays the answer and removes plupp
 
 	    io.emit('removePlupp', [clickedPlupp, currentQuestion.answers[clickedPlupp-1]]);
+
+	    nextPlayer();
 	    
         });
 
+	socket.on('getClickedPlupp', () => {
+	    socket.emit('returnClicked', clickedPlupps);
+	});
 	// io.emit('playerName', players);
 	updatePlayers();
 	io.emit('question', [currentQuestion.question,currentQuestion.alts]);
@@ -72,6 +83,20 @@ io.on('connection', function(socket) {
     });
         
 });
+
+function nextPlayer() {
+    
+    if (currentPlayer == players.length-1) {
+	currentPlayer = 0;
+    } else {
+	currentPlayer++;
+    }
+    console.log(currentPlayer);
+    if (players[currentPlayer].pass == true) {
+	currentPlayer++;
+    }
+
+}
 
 function updatePlayers() {
     io.emit('playerName', players);

@@ -310,19 +310,45 @@ function clicked(pluppNr) {
 	console.log(currentPlayerBool);
 	if (currentPlayerBool) {
 	    clickedPlupp = document.getElementById("plupp" + pluppNr);
-	    var answerBox = document.getElementById("bottom");
-	    if (clickedBool == false) {
-		clickedPlupp.style.boxShadow = "0px 0px 1px 4px white";
-		answerBox.style.display = "flex";
-		console.log("clicked false");
-	    } else {
-		clickedPlupp.style.boxShadow = "none";
-		console.log("clicked true");
-	    }
+
+	    socket.emit('getClickedPlupp')
+	    socket.on('returnClicked', function(clickedPlupps) {
+		// console.log(clickedPlupps);
+
+
+		if (clickedPlupps.includes(toString(pluppNr)) == false) { 
+		    var answerBox = document.getElementById("bottom");
+		    if (clickedBool == false) {
+			clickedPlupp.style.boxShadow = "0px 0px 1px 4px white";
+			answerBox.style.display = "flex";
+			console.log(clickedPlupps[i], pluppNr, "hit borde du inte komma");
+			// console.log("clicked false");
+		    } else {
+			clickedPlupp.style.boxShadow = "none";
+			// console.log("clicked true");
+		    }		
+		    
+		} else {
+		    console.log("fel");
+		}
+
+		
+	    });
 	    
-	} else {
-	    console.log("wallah det funkar");
+	    // var answerBox = document.getElementById("bottom");
+	    // if (clickedBool == false) {
+	    // 	clickedPlupp.style.boxShadow = "0px 0px 1px 4px white";
+	    // 	answerBox.style.display = "flex";
+	    // 	// console.log("clicked false");
+	    // } else {
+	    // 	clickedPlupp.style.boxShadow = "none";
+	    // 	// console.log("clicked true");
+	    // }
+	    
 	}
+	// else {
+	    
+	// }
     });
     
 }
