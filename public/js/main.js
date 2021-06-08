@@ -118,6 +118,11 @@ function setPlayerPlupps() {
 	var container = document.getElementById("p"+players[i].playerNumber+"Plupp");
 	container.innerHTML = "";	    
 
+	if (players[i].plupps == 0 && players[i].pass == true) {
+	    document.getElementById("player" + players[i].playerNumber).style.backgroundColor = "lightgray";
+	    document.getElementById("p" + players[i].playerNumber + "Plupp").style.border = "10px solid lightgray";
+	}
+	
 	for (var j = 0; j < players[i].plupps; j++) {
 	    container.innerHTML += "<div class='usedPlupp'> </div>";	    
 	}	
@@ -292,12 +297,16 @@ window.addEventListener("resize", function(){
 //===========Frontend stuff======================
 
 function pass() {
-    players[currentPlayer-1].pass = true;
-    players.splice(currentPlayer-1, 1);
+    socket.emit('reqCurrentPlayer', socket.id);
+    socket.on('isCurrentPlayer', (currentPlayerBool) => {
 
-    console.log(currentPlayer);
+	if (currentPlayerBool) {
+	    socket.emit('pass', socket.id);
+	}
+	
+    });
+	     
 }
-
 var clickedBool = false;
 var clickedPlupp;
 
